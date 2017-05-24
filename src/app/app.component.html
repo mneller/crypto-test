@@ -1,3 +1,24 @@
-<h1>
+<div class="container">
+<div class="jumbotron">
+  <h1>
   {{title}}
 </h1>
+</div>
+<div class="row">
+  <div class="col-md-5">
+      <form #formData="ngForm" (ngSubmit)="onSubmit(formData)">
+        <div class="form-group">
+          <label for="exampleText">Example Text</label>
+          <input type="text" class="form-control" id="exampleText" [(ngModel)]="exampleText" name="exampleText" placeholder="hugo">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <h2>Hashed Text</h2>
+    <p class="text-info text-left text-uppercase"> {{hashValue}}</p>
+  </div>
+  </div>
+</div>
