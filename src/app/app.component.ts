@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-//import { TextEncoder } from 'text-encoding/lib/encoding.js'
-import { TextEncoder, TextDecoder } from 'text-encoding-shim';
+import { TextEncoder} from 'text-encoding-shim';
 
 @Component({
   selector: 'app-root',
@@ -18,34 +17,44 @@ export class AppComponent {
 
   }
 
-  hashIt(passcode: string):void {
+  hashIt(passcode: string):string {
 
-    console.log("hashIt " + passcode)
+    let array = new Uint32Array(10);
+
+    crypto.getRandomValues(array);
+
+    console.log("Your lucky numbers:");
+    for (let i = 0; i < array.length; i++) {
+      console.log("==> " + array[i]);
+    }
+
+    console.log("hashIt " + passcode);
     let uint8array = new TextEncoder('utf-8').encode(passcode);
-    let result: any;
-    result = crypto.subtle.digest("SHA-256", uint8array)
+    let result: string = "";
+    crypto.subtle.digest("SHA-256", uint8array)
       .then(hash => {
         console.log("hex == " + this.hex(hash));
-
-        this.hashValue = this.hex(hash);
+        result = this.hex(hash);
+        this.hashValue = result;
       }, (err) => {
          console.log(err);
-         return "";
+         result = "";
       });
-    return result.toString();
+    this.hashValue = result;
+    return result;
   }
 
   hex(buffer: ArrayBuffer) {
-    var hexCodes = [];
-    var view = new DataView(buffer);
-    for (var i = 0; i < view.byteLength; i += 4) {
+    let hexCodes = [];
+    let view = new DataView(buffer);
+    for (let i = 0; i < view.byteLength; i += 4) {
       // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
-      var value = view.getUint32(i)
+      const value = view.getUint32(i);
       // toString(16) will give the hex representation of the number without padding
-      var stringValue = value.toString(16)
+      const stringValue = value.toString(16);
       // We use concatenation and slice for padding
-      var padding = '00000000'
-      var paddedValue = (padding + stringValue).slice(-padding.length)
+      const padding = '00000000';
+      const paddedValue = (padding + stringValue).slice(-padding.length);
       hexCodes.push(paddedValue);
     }
 
