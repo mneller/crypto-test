@@ -31,6 +31,28 @@ export class WebCryptoService {
   } // of  hashValue(v: string): Observable<string>.
 
 
+  pbkdf2Hash(code:string, salt: string, interations: number, nbOfBits: number): Observable<string> {
+    // Returns a PBKDF2 hash string observable of the code calculated based on the given parameters
+    const bytes = this.enc.encode(code);
+    const saltBytes = this.enc.encode(salt);
+
+    // Create the base key to derive from.
+    const importedKey = crypto.subtle.importKey(
+      "raw", bytes, "PBKDF2", false, ["deriveBits"]);
+
+    let result = importedKey.then(key => {
+      // Salt should be at least 64 bits.
+      //let salt = crypto.getRandomValues(new Uint8Array(8));
+      // All required PBKDF2 parameters.
+      const params = {name: "PBKDF2", hash: this.hashAlgo, salt: saltBytes, iterations: interations};
+      //console.log("params == " + JSON.stringify(params));
+      // Derive 160 bits using PBKDF2.
+      return crypto.subtle.deriveBits(params, key, nbOfBits);
+    });
+
+    return Observable.fromPromise(result)
+      .map(x => this.hexString(x));
+  } // of pbkdf2Hash(code): Obserable<string>
 
   // ***********************
   // *** Help functions: ***
@@ -40,12 +62,12 @@ export class WebCryptoService {
     let view = new DataView(buffer);
     for (let i = 0; i < view.byteLength; i += 4) {
       // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
-      let value = view.getUint32(i)
+      let value = view.getUint32(i);
       // toString(16) will give the hex representation of the number without padding
-      let stringValue = value.toString(16)
+      let stringValue = value.toString(16);
       // We use concatenation and slice for padding
-      let padding = '00000000'
-      let paddedValue = (padding + stringValue).slice(-padding.length)
+      let padding = '00000000';
+      let paddedValue = (padding + stringValue).slice(-padding.length);
       hexCodes.push(paddedValue);
     }
     // Join all the hex strings into one
