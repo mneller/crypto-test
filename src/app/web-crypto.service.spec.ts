@@ -2,8 +2,8 @@
 
 import { WebCryptoService } from './web-crypto.service';
 import 'rxjs/add/operator/take';
-import {fakeAsync, tick} from "@angular/core/testing";
 /*
+import {fakeAsync, tick} from "@angular/core/testing";
 describe('WebCryptoService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -117,5 +117,52 @@ describe('Test WebCryptoService without the TestBed', () => {
           done();
         });
     }); // 'pbkdf2Hash should deliver a value'.
+  });
+
+  // *** Testing Service funcitons
+
+  let passwordHashesTestValues = [
+    { user: 'hugo',
+      passwort: 'test',
+      result: 'ca0dd79f10694891145b8b5ac3c39a6415ad43ec6e2b8d7b35a4171d38674ce5'
+    },
+    { user: 'hugo',
+      passwort: 'test1',
+      result: 'a0a5bfe6da7c50a29c6594f326b9cb7f9c216e5438b7694d5e1e2ac56f5601fa'
+    },
+    { user: 'hugo1',
+      passwort: 'test',
+      result: 'e02859f3f8c4f7251393f9a4563d90f5ac330f42cb1fdc65cb882a38eb970442'
+    },
+  ];
+  passwordHashesTestValues.map(testSet => {
+    it('getPasswortHad should deliver a correct values for user <' + testSet.user
+        + '> and password <' + testSet.passwort + '>', (done: DoneFn) => {
+      service.getUserPasswordHash(testSet.user, testSet.passwort)
+        .subscribe(value => {
+          // console.log('value == ' + value);
+          expect(value).toBe(testSet.result);
+          done();
+        });
+    });
+  });
+
+  // *** Testing symetric encryptions: ***
+  let aesTestValues =[
+    {   iv: 'hugo',
+        message: 'hugo',
+        result: 'b7fefb3264956b6d44231c7dd9422367b9dd04be'
+    },
+  ];
+  aesTestValues.map(testSet => {
+    it('getPasswortHad should deliver a correct values for iv <' + testSet.iv
+        + '> and message <' + testSet.message + '>', (done: DoneFn) => {
+      service.encryptAES(testSet.iv, testSet.message)
+        .subscribe(value => {
+          // console.log('value == ' + value);
+          expect(value).toBe(testSet.result);
+          done();
+        });
+    });
   });
 });
