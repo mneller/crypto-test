@@ -157,73 +157,6 @@ export class WebCryptoService {
     });
   } //decryptAES(passcode: string, message: string).
 
-
-/*  encryptAES(iv: string, message: string):Observable<string> {
-    // iv: the initialization string for the AES encryption
-    // message: the messate to encrypt.
-    // Result is an Obserable on the encrypted message string.
-    const bytes = this.enc.encode(iv + '012345678910111213').slice(0, 16);
-
-    console.log('bytes:' + bytes);
-    let aesKey = this.myCrypto.subtle.importKey(
-      'raw',
-      bytes,
-      { name: this.encryptName,
-        length: this.encryptBits
-      },
-      false, //whether the key is extractable (i.e. can be used in exportKey)
-      ["encrypt", "decrypt"] //can "encrypt", "decrypt", "wrapKey", or "unwrapKey"
-    );
-
-    let result = aesKey.then(key => {
-      const params = {
-        name: this.encryptName,
-        //iv: this.enc.encode(iv)
-        iv: bytes
-      };
-      return this.myCrypto.subtle.encrypt(
-        params,
-        key,
-        this.enc.encode(message)
-      );
-    });
-    return Observable.fromPromise(result)
-      .map(x => this.hexString(x));
-  } // of encryptAES(iv: string).
-
-  decryptAES(iv: string, message: string):Observable<string> {
-    // iv: the initialization string for the AES encryption
-    // message: the messate to encrypt.
-    // Result is an Obserable on the encrypted message string.
-    const bytes = this.enc.encode(iv + '012345678910111213').slice(0, 16);
-
-    console.log('bytes:' + bytes);
-    let aesKey = this.myCrypto.subtle.importKey(
-      'raw',
-      bytes,
-      { name: this.encryptName,
-        //iv: bytes,
-      },
-      false, //whether the key is extractable (i.e. can be used in exportKey)
-      ["encrypt", "decrypt"] //can "encrypt", "decrypt", "wrapKey", or "unwrapKey"
-    );
-
-    let result = aesKey.then(key => {
-      const params = {
-        name: this.encryptName,
-        iv: bytes,
-        byteLength: 128
-      };
-      return this.myCrypto.subtle.decrypt(
-        params,
-        key,
-        this.enc.encode(message)
-      );
-    });
-    return Observable.fromPromise(result)
-      .map(x => this.hexString(x));
-  } // of encryptAES(iv: string).
-*/
   // ***********************
   // *** Help functions: ***
   // ***********************
@@ -239,25 +172,6 @@ export class WebCryptoService {
       });
   } // of getSalt(user:string).
 
-/*
-  hexString(buffer: ArrayBuffer):string {
-    // ToDo Revwork this function. Works only smart if lenth % 4 = 0!
-    let hexCodes = [];
-    let view = new DataView(buffer);
-    for (let i = 0; i < view.byteLength; i += 4) {
-      // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
-      let value = view.getUint32(i);
-      // toString(16) will give the hex representation of the number without padding
-      let stringValue = value.toString(16);
-      // We use concatenation and slice for padding
-      let padding = '00000000';
-      let paddedValue = (padding + stringValue).slice(-padding.length);
-      hexCodes.push(paddedValue);
-    }
-    // Join all the hex strings into one
-    return hexCodes.join('');
-  } // of hexString(buffer: ArrayBuffer):string.
-*/
   hexString(buffer: ArrayBuffer):string {
     let bytes = new Uint8Array(buffer);
     let result = '';
@@ -278,7 +192,7 @@ export class WebCryptoService {
   parseHexString(str: string):Uint8Array {
     // console.log('str ===' + str.length);
     let result = new Uint8Array(str.length / 2);
-    let index = 0
+    let index = 0;
     while (str.length >= 2) {
       result[index++] = parseInt(str.substring(0, 2), 16);
       str = str.substring(2, str.length);

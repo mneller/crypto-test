@@ -161,19 +161,23 @@ describe('Test WebCryptoService without the TestBed', () => {
         message: 'Diesesrdx',
         result: 'cc497c74d050576dd4d388c4596890315cf3ab14b969eaa5bb'
     },
-    /*{   iv: 'hugo'+ '012345678910111213',
+    {   passcode: 'hugo'+ '012345678910111213',
         message: 'hugo',
-        result: 'ac1a9fdb4f5604cb0a092ff2eb10fc2b682047f8'
+        result: 'ba07a990a9babd31ade5d15ddad9c4501a1ac814'
     },
-    {   iv: 'hugox'+ '012345678910111213',
-      message: 'Dieses',
-      result: 'ac1a9fdb4f5604cb0a092ff2eb10fc2b682047f8'
+    {   passcode : 'hugox'+ '012345678910111213',
+      message: 'Dieses ist ein langer Text zum vergleichen. Er sollte auch komplett verschlüsselt werden.'
+          + 'This is a long text to compare with the short once. It should be completely encrypted.',
+      result: '1f6409f33b7a783bb11f9a3c7cd673d5d5235a399b741bbcb61b5304ce4094baf1e7f6ff43309565b2805a3787d891f5164'
+          + 'd3ca45b5c9fc30bc81053aa97a3218e6b22ca9d5e42244044e6c54681226e4888f8f849d01179fbe9d8e30589c3f8d38384c9'
+          + '5e97e2cf01899377287f36874d590debd2b255590f7ca3278c886d96aa8bfe8a14c3d9300bb995a9d4e6f4b59a344813da53b'
+          + '62c5ef6ce508c8a6e328c393571a44bdb265f3d91cfcbdf47455aab69161a4baf1f1272d9660e89068d'
     },
-  */
+
   ];
   // *** Test encryption: ***
   aesTestValues.map(testSet => {
-    it('encryptAES should deliver a correct values for iv <' + testSet.passcode
+    it('encryptAES should deliver a correct values for passcode <' + testSet.passcode
         + '> and message <' + testSet.message + '>', (done: DoneFn) => {
       service.encryptAES(testSet.passcode, testSet.message)
         .subscribe(value => {
@@ -185,7 +189,7 @@ describe('Test WebCryptoService without the TestBed', () => {
   });
   // *** Test decryption: ***
   aesTestValues.map(testSet => {
-    it('decryptAES should deliver a correct values for iv <' + testSet.passcode
+    it('decryptAES should deliver a correct values for passcode <' + testSet.passcode
       + '> and message <' + testSet.message + '>', (done: DoneFn) => {
       service.decryptAES(testSet.passcode, testSet.result)
         .subscribe(value => {
