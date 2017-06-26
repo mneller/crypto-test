@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TextEncoder } from 'text-encoding-shim';
+import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
@@ -18,7 +18,7 @@ export class WebCryptoService {
     // Further information: https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
 
   private enc = new TextEncoder('utf-8');
-  //private dec = new TextDecoder('utf-8');
+  private dec = new TextDecoder('utf-8');
   private myCrypto = crypto; // Just to encapsulate the dependency.
   private applicationSalt = 'xh3ff';
   private minimumInteration = 11223;
@@ -58,6 +58,7 @@ export class WebCryptoService {
   pbkdf2Hash(code:string, salt: string, interations: number, nbOfBits: number): Observable<string> {
     // Returns a PBKDF2 hash string observable of the code calculated based on the given parameters
     const bytes = this.enc.encode(code);
+
     const saltBytes = this.enc.encode(salt);
 
     // Create the base key to derive from.
@@ -84,22 +85,101 @@ export class WebCryptoService {
   private encryptName = 'AES-GCM';
   private encryptBits = 256; // can be also 32, 64, 96, 104, 112, 120 or 128 (default)
 
-  encryptAES(iv: string, message: string):Observable<string> {
+
+  encryptAES(passcode: string, message: string):Observable<string> {
+    // passcode: the initialization string for the AES encryption
+    // message: the messate to encrypt.
+    // Result is an Obserable on the encrypted message string.
+    const bytes = this.enc.encode(passcode);
+    const salt = this.enc.encode('hugo');
+    const iv = this.enc.encode("hugohugohugohugo");
+
+    return Observable.fromPromise(
+      this.myCrypto.subtle.importKey(
+        "raw", bytes, {"name": "PBKDF2"}, false, ["deriveKey"]
+    ).then(baseKey => {
+        return this.myCrypto.subtle.deriveKey(
+          { "name": "PBKDF2",
+            "salt":  salt,
+            "iterations": 35,
+            "hash": this.hashAlgo
+          },
+          baseKey,
+          {"name": this.encryptName , "length": this.encryptBits}, // Key we want
+          false,                               // Extrable
+          ["encrypt", "decrypt"]              // For new key
+        );
+    }).then(deriveKey => {
+        return this.myCrypto.subtle.encrypt(
+          { name: this.encryptName, iv:iv },
+          deriveKey,
+          this.enc.encode(message)
+        )
+      })
+    ).map(x => this.hexString(x));
+  } //encryptAES(passcode: string, message: string).
+
+  decryptAES(passcode: string, message: string):Observable<string> {
+    // passcode: the initialization string for the AES encryption
+    // message: the messate to encrypt.
+    // Result is an Obserable on the encrypted message string.
+    const bytes = this.enc.encode(passcode);
+    const salt = this.enc.encode('hugo');
+    const iv = this.enc.encode("hugohugohugohugo");
+
+    return Observable.fromPromise(
+      this.myCrypto.subtle.importKey(
+        "raw", bytes, {"name": "PBKDF2"}, false, ["deriveKey"]
+    ).then(baseKey => {
+      //console.log("base key generated");
+      return this.myCrypto.subtle.deriveKey(
+          { "name": "PBKDF2",
+            "salt":  salt,
+            "iterations": 35,
+            "hash": this.hashAlgo
+          },
+          baseKey,
+          {"name": this.encryptName , "length": this.encryptBits}, // Key we want
+          false,                               // Extrable
+          ["encrypt", "decrypt"]              // For new key
+        );
+    }).then(deriveKey => {
+        //console.log("Derived key");
+        return this.myCrypto.subtle.decrypt(
+          { name: this.encryptName, iv:iv },
+          deriveKey,
+          this.parseHexString(message)
+        );
+      })
+    ).map(x => {
+      //console.log("x == " + x);
+      return this.dec.decode(new Uint8Array(x));
+    });
+  } //decryptAES(passcode: string, message: string).
+
+
+/*  encryptAES(iv: string, message: string):Observable<string> {
     // iv: the initialization string for the AES encryption
     // message: the messate to encrypt.
     // Result is an Obserable on the encrypted message string.
-    let aesKey = this.myCrypto.subtle.generateKey(
+    const bytes = this.enc.encode(iv + '012345678910111213').slice(0, 16);
+
+    console.log('bytes:' + bytes);
+    let aesKey = this.myCrypto.subtle.importKey(
+      'raw',
+      bytes,
       { name: this.encryptName,
         length: this.encryptBits
       },
       false, //whether the key is extractable (i.e. can be used in exportKey)
       ["encrypt", "decrypt"] //can "encrypt", "decrypt", "wrapKey", or "unwrapKey"
     );
+
     let result = aesKey.then(key => {
       const params = {
         name: this.encryptName,
-        iv: this.enc.encode(iv),
-        tagLength: 128
+        //iv: this.enc.encode(iv)
+        iv: bytes
       };
       return this.myCrypto.subtle.encrypt(
         params,
@@ -111,6 +191,39 @@ export class WebCryptoService {
       .map(x => this.hexString(x));
   } // of encryptAES(iv: string).
 
+  decryptAES(iv: string, message: string):Observable<string> {
+    // iv: the initialization string for the AES encryption
+    // message: the messate to encrypt.
+    // Result is an Obserable on the encrypted message string.
+    const bytes = this.enc.encode(iv + '012345678910111213').slice(0, 16);
+
+    console.log('bytes:' + bytes);
+    let aesKey = this.myCrypto.subtle.importKey(
+      'raw',
+      bytes,
+      { name: this.encryptName,
+        //iv: bytes,
+      },
+      false, //whether the key is extractable (i.e. can be used in exportKey)
+      ["encrypt", "decrypt"] //can "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+    );
+
+    let result = aesKey.then(key => {
+      const params = {
+        name: this.encryptName,
+        iv: bytes,
+        byteLength: 128
+      };
+      return this.myCrypto.subtle.decrypt(
+        params,
+        key,
+        this.enc.encode(message)
+      );
+    });
+    return Observable.fromPromise(result)
+      .map(x => this.hexString(x));
+  } // of encryptAES(iv: string).
+*/
   // ***********************
   // *** Help functions: ***
   // ***********************
@@ -126,8 +239,9 @@ export class WebCryptoService {
       });
   } // of getSalt(user:string).
 
-
+/*
   hexString(buffer: ArrayBuffer):string {
+    // ToDo Revwork this function. Works only smart if lenth % 4 = 0!
     let hexCodes = [];
     let view = new DataView(buffer);
     for (let i = 0; i < view.byteLength; i += 4) {
@@ -143,5 +257,35 @@ export class WebCryptoService {
     // Join all the hex strings into one
     return hexCodes.join('');
   } // of hexString(buffer: ArrayBuffer):string.
+*/
+  hexString(buffer: ArrayBuffer):string {
+    let bytes = new Uint8Array(buffer);
+    let result = '';
+    bytes.forEach(byte => {
+      if (byte < 0 || byte > 255) {
+        console.error('Error: Wrong byte = ' + byte);
+      } else {
+        const hex = byte.toString(16);
+        if (byte < 16) {
+          result += '0';
+        }
+        result += hex;
+      }
+    });
+    return result;
+  } // of hexString(buffer: ArrayBuffer):string.
+
+  parseHexString(str: string):Uint8Array {
+    // console.log('str ===' + str.length);
+    let result = new Uint8Array(str.length / 2);
+    let index = 0
+    while (str.length >= 2) {
+      result[index++] = parseInt(str.substring(0, 2), 16);
+      str = str.substring(2, str.length);
+    }
+
+  return result;
+}
+
 
 }

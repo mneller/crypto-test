@@ -149,15 +149,33 @@ describe('Test WebCryptoService without the TestBed', () => {
 
   // *** Testing symetric encryptions: ***
   let aesTestValues =[
-    {   iv: 'hugo',
+    {   passcode: 'hugohugohugohugo',
         message: 'hugo',
-        result: 'b7fefb3264956b6d44231c7dd9422367b9dd04be'
+        result: 'c177580a6783ba64da2decbe4610bd38159c27b1'
     },
+    {   passcode: 'hugohugo',
+        message: 'hugo',
+        result: '996fea3a12fbced74c116c36bdf179cf5c77d464'
+    },
+    {   passcode: 'hugo',
+        message: 'Diesesrdx',
+        result: 'cc497c74d050576dd4d388c4596890315cf3ab14b969eaa5bb'
+    },
+    /*{   iv: 'hugo'+ '012345678910111213',
+        message: 'hugo',
+        result: 'ac1a9fdb4f5604cb0a092ff2eb10fc2b682047f8'
+    },
+    {   iv: 'hugox'+ '012345678910111213',
+      message: 'Dieses',
+      result: 'ac1a9fdb4f5604cb0a092ff2eb10fc2b682047f8'
+    },
+  */
   ];
+  // *** Test encryption: ***
   aesTestValues.map(testSet => {
-    it('getPasswortHad should deliver a correct values for iv <' + testSet.iv
+    it('encryptAES should deliver a correct values for iv <' + testSet.passcode
         + '> and message <' + testSet.message + '>', (done: DoneFn) => {
-      service.encryptAES(testSet.iv, testSet.message)
+      service.encryptAES(testSet.passcode, testSet.message)
         .subscribe(value => {
           // console.log('value == ' + value);
           expect(value).toBe(testSet.result);
@@ -165,4 +183,17 @@ describe('Test WebCryptoService without the TestBed', () => {
         });
     });
   });
+  // *** Test decryption: ***
+  aesTestValues.map(testSet => {
+    it('decryptAES should deliver a correct values for iv <' + testSet.passcode
+      + '> and message <' + testSet.message + '>', (done: DoneFn) => {
+      service.decryptAES(testSet.passcode, testSet.result)
+        .subscribe(value => {
+          //console.log('value == ' + value);
+          expect(value).toBe(testSet.message);
+          done();
+        });
+    })
+  });
+
 });
