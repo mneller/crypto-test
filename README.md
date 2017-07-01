@@ -31,6 +31,17 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Notes:
 [WebCrypto-shim](https://github.com/vibornoff/webcrypto-shim)
 
+## Planning:
+1. Create a start page with login button in header and create user possibility
+   1. Enable routing between Home, Subscribe, Login, User page 
+   2. Ensure visiablity of User Page only if loged in. 
+      1. Ensure state mgmt with Redux
+   3. Ensure User Creating with Subscribe
+   4. Modify the Home page to show the hash modeles supported
+   5. Create a AES page for logged in users
 
+## Done
++ LINT review
++ Save to GIT Hub Repository
 
 
