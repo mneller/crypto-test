@@ -8,45 +8,45 @@ import { TextEncoder} from 'text-encoding-shim';
 })
 export class AppComponent {
   title = 'Cypto test!';
-  exampleText = "";
-  hashValue = "";
+  exampleText = '';
+  hashValue = '';
 
   onSubmit(formData) {
-    console.log("OnSubmit");
+    console.log('OnSubmit');
     this.hashIt(this.exampleText);
 
   }
 
-  hashIt(passcode: string):string {
+  hashIt(passcode: string): string {
 
-    let array = new Uint32Array(10);
+    const arr = new Uint32Array(10);
 
-    crypto.getRandomValues(array);
+    crypto.getRandomValues(arr);
 
-    console.log("Your lucky numbers:");
-    for (let i = 0; i < array.length; i++) {
-      console.log("==> " + array[i]);
+    console.log('Your lucky numbers:');
+    for (let i = 0; i < arr.length; i++) {
+      console.log('==> ' + arr[i]);
     }
 
-    console.log("hashIt " + passcode);
-    let uint8array = new TextEncoder('utf-8').encode(passcode);
-    let result: string = "";
-    crypto.subtle.digest("SHA-256", uint8array)
+    console.log('hashIt ' + passcode);
+    const uint8array = new TextEncoder('utf-8').encode(passcode);
+    let result = '';
+    crypto.subtle.digest('SHA-256', uint8array)
       .then(hash => {
-        console.log("hex == " + this.hex(hash));
+        console.log('hex == ' + this.hex(hash));
         result = this.hex(hash);
         this.hashValue = result;
       }, (err) => {
          console.log(err);
-         result = "";
+         result = '';
       });
     this.hashValue = result;
     return result;
   }
 
   hex(buffer: ArrayBuffer) {
-    let hexCodes = [];
-    let view = new DataView(buffer);
+    const hexCodes = [];
+    const view = new DataView(buffer);
     for (let i = 0; i < view.byteLength; i += 4) {
       // Using getUint32 reduces the number of iterations needed (we process 4 bytes each time)
       const value = view.getUint32(i);
@@ -59,6 +59,6 @@ export class AppComponent {
     }
 
     // Join all the hex strings into one
-    return hexCodes.join("");
+    return hexCodes.join('');
   }
 }

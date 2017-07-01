@@ -25,7 +25,7 @@ describe('Test WebCryptoService without the TestBed', () => {
   });
 
   // Test values are from https://de.wikipedia.org/wiki/SHA-2:
-  let sha256TestValues = [
+  const sha256TestValues = [
     // Test values are from https://de.wikipedia.org/wiki/SHA-2:
     { password: '',
       result: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
@@ -52,7 +52,7 @@ describe('Test WebCryptoService without the TestBed', () => {
     },
   ];
   sha256TestValues.map(testSet => {
-    it('Testing SHA-256 against <' + testSet.password +'> string', (done: DoneFn) => {
+    it('Testing SHA-256 against <' + testSet.password + '> string', (done: DoneFn) => {
       service.hashValue(testSet.password)
         .subscribe(value => {
           expect(value).toBe(testSet.result);
@@ -62,7 +62,7 @@ describe('Test WebCryptoService without the TestBed', () => {
 
   });
 
-  let pbkdf2TestValues = [
+  const pbkdf2TestValues = [
     // From RFC6070
     { password: 'password',
       salt: 'salt',
@@ -74,7 +74,7 @@ describe('Test WebCryptoService without the TestBed', () => {
     { password: 'password',
       salt: 'salt',
       cycles: 2,
-      bits: 20*8,
+      bits: 20 * 8,
       result: 'ae4d0c95af6b46d32d0adff928f06dd02a303f8e'
     },
     // From RFC6070 but not working
@@ -82,8 +82,8 @@ describe('Test WebCryptoService without the TestBed', () => {
       salt: 'saltSALTsaltSALTsaltSALTsaltSALTsalt',
       cycles: 4096,
       // This parameters are not working
-      //bits: 25*8,
-      //result: '348c89dbcbd32b2f32d814b8116e84cf2b17347ebc1800181c'
+      // bits: 25*8,
+      // result: '348c89dbcbd32b2f32d814b8116e84cf2b17347ebc1800181c'
       bits: 256, // Go with this and get the result
       result: '348c89dbcbd32b2f32d814b8116e84cf2b17347ebc1800181c4e2a1fb8dd53e1'
     },
@@ -121,7 +121,7 @@ describe('Test WebCryptoService without the TestBed', () => {
 
   // *** Testing Service funcitons
 
-  let passwordHashesTestValues = [
+  const passwordHashesTestValues = [
     { user: 'hugo',
       passwort: 'test',
       result: 'ca0dd79f10694891145b8b5ac3c39a6415ad43ec6e2b8d7b35a4171d38674ce5'
@@ -148,7 +148,7 @@ describe('Test WebCryptoService without the TestBed', () => {
   });
 
   // *** Testing symetric encryptions: ***
-  let aesTestValues =[
+  const aesTestValues = [
     {   passcode: 'hugohugohugohugo',
         message: 'hugo',
         result: 'c177580a6783ba64da2decbe4610bd38159c27b1'
@@ -161,11 +161,11 @@ describe('Test WebCryptoService without the TestBed', () => {
         message: 'Diesesrdx',
         result: 'cc497c74d050576dd4d388c4596890315cf3ab14b969eaa5bb'
     },
-    {   passcode: 'hugo'+ '012345678910111213',
+    {   passcode: 'hugo' + '012345678910111213',
         message: 'hugo',
         result: 'ba07a990a9babd31ade5d15ddad9c4501a1ac814'
     },
-    {   passcode : 'hugox'+ '012345678910111213',
+    {   passcode : 'hugox' + '012345678910111213',
       message: 'Dieses ist ein langer Text zum vergleichen. Er sollte auch komplett verschlüsselt werden.'
           + 'This is a long text to compare with the short once. It should be completely encrypted.',
       result: '1f6409f33b7a783bb11f9a3c7cd673d5d5235a399b741bbcb61b5304ce4094baf1e7f6ff43309565b2805a3787d891f5164'
@@ -193,11 +193,11 @@ describe('Test WebCryptoService without the TestBed', () => {
       + '> and message <' + testSet.message + '>', (done: DoneFn) => {
       service.decryptAES(testSet.passcode, testSet.result)
         .subscribe(value => {
-          //console.log('value == ' + value);
+          // console.log('value == ' + value);
           expect(value).toBe(testSet.message);
           done();
         });
-    })
+    });
   });
 
 });
