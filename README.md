@@ -34,7 +34,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Planning:
 1. Create a start page with login button in header and create user possibility
    1. Enable routing between Home, Subscribe, Login, User page 
-   2. Ensure visiablity of User Page only if loged in. 
+      1. Create component and link home as start page => Done
+      2. Create nav bar for selecting between components => Done
+   2. Ensure visibility of User Page only if loged in. 
+      
+      (https://github.com/angular-redux/store/blob/master/articles/quickstart.md)
       1. Ensure state mgmt with Redux
    3. Ensure User Creating with Subscribe
    4. Modify the Home page to show the hash modeles supported

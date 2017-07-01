@@ -4,6 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
+// *** Redux: ***
+import { NgReduxModule, NgRedux } from '@angular-redux/store';
+
+// *** Application components: ***
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { SubscribeComponent } from './subscribe/subscribe.component';
