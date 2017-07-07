@@ -15,6 +15,7 @@ import { SubscribeComponent } from './subscribe/subscribe.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import {WebCryptoService} from "./web-crypto.service";
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -49,7 +50,7 @@ const appRoutes: Routes = [
     NgReduxModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [],
+  providers: [WebCryptoService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

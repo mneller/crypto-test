@@ -36,10 +36,13 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
    1. Enable routing between Home, Subscribe, Login, User page 
       1. Create component and link home as start page => Done
       2. Create nav bar for selecting between components => Done
+      3. On Home ensure the testing possibility of the hash functions
+      
    2. Ensure visibility of User Page only if loged in. 
       
       (https://github.com/angular-redux/store/blob/master/articles/quickstart.md)
-      1. Ensure state mgmt with Redux
+      1. Ensure state mgmt with Redux => Done
+      2. Create the login page 
    3. Ensure User Creating with Subscribe
    4. Modify the Home page to show the hash modeles supported
    5. Create a AES page for logged in users

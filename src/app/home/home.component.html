@@ -1,3 +1,21 @@
-<p>
-  home works!
-</p>
+<div class="container">
+  <div class="col-md-4">
+    <form (ngSubmit)="onSubmit(formData)">
+      <div class="form-group">
+        <label for="hashAlgo">Hash Algorithm:</label>
+        <select class="form-control" id="hashAlgo" name="hashAlgo" [(ngModel)]="hashAlgo">
+          <option>PBKDF2</option>
+          <option>SHA-256</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="exampleText">Example test:</label>
+        <input type="text" class="form-control" id="exampleText" name="exampleText" [(ngModel)]="exampleText">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    Hash Value: <span class="label-info">{{hashValue | async}}</span>
+
+  </div>
+
+</div>
