@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
 
 import { UserComponent } from './user.component';
 
@@ -8,9 +9,10 @@ describe('UserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserComponent ]
-    })
-    .compileComponents();
+      declarations: [ UserComponent ],
+      imports: [NgReduxTestingModule],
+    }).compileComponents();
+    MockNgRedux.reset();
   }));
 
   beforeEach(() => {

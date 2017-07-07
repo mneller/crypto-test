@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
 
 import { SubscribeComponent } from './subscribe.component';
 
@@ -8,9 +9,10 @@ describe('SubscribeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubscribeComponent ]
-    })
-    .compileComponents();
+      declarations: [ SubscribeComponent ],
+      imports: [NgReduxTestingModule],
+    }).compileComponents();
+    MockNgRedux.reset();
   }));
 
   beforeEach(() => {

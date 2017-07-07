@@ -1,11 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
 // *** Redux: ***
 import { NgReduxModule, NgRedux } from '@angular-redux/store';
+import { rootReducer, IAppState, INIT_STATE} from './redux-store';
 
 // *** Application components: ***
 import { AppComponent } from './app.component';
@@ -44,9 +45,15 @@ const appRoutes: Routes = [
     ),
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    NgReduxModule
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(reduxStore: NgRedux<IAppState>) {
+    reduxStore.configureStore(rootReducer, INIT_STATE);
+  } // of constructor.
+}  // of class AppModule

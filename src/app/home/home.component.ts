@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NgRedux } from '@angular-redux/store';
+import { IAppState } from '../redux-store';
+import {NavActions} from '../nav-actions';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private reduxStore: NgRedux<IAppState>) { }
 
   ngOnInit() {
-  }
+    this.reduxStore.dispatch(
+      NavActions.selectComponent('Home')
+    );
+  } // of ngOnInit().
 
-}
+} // of class HomeComponent.
