@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule} from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -15,7 +15,7 @@ import { SubscribeComponent } from './subscribe/subscribe.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import {WebCryptoService} from "./web-crypto.service";
+import {WebCryptoService} from './web-crypto.service';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -45,7 +45,7 @@ const appRoutes: Routes = [
       { enableTracing: true } // <-- debugging purposes only
     ),
     BrowserModule,
-    FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     NgReduxModule
   ],

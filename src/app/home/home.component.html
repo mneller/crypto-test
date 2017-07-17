@@ -1,21 +1,49 @@
 <div class="container">
-  <div class="col-md-4">
-    <form (ngSubmit)="onSubmit(formData)">
-      <div class="form-group">
-        <label for="hashAlgo">Hash Algorithm:</label>
-        <select class="form-control" id="hashAlgo" name="hashAlgo" [(ngModel)]="hashAlgo">
-          <option>PBKDF2</option>
-          <option>SHA-256</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="exampleText">Example test:</label>
-        <input type="text" class="form-control" id="exampleText" name="exampleText" [(ngModel)]="exampleText">
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
-    Hash Value: <span class="label-info">{{hashValue | async}}</span>
+  <div class="row">
+    <div class="col-md-4">
+      <form  [formGroup]="hashForm" (ngSubmit)="onSubmit()">
 
+        <div class="form-group">
+          <label for="hashAlgo">Hash Algorithm:</label>
+          <select class="form-control" id="hashAlgo" formControlName="hashAlgo">
+            <option>PBKDF2</option>
+            <option>SHA-256</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleText">Example test:</label>
+          <input type="text" class="form-control" id="exampleText" formControlName="exampleText">
+        </div>
+
+        <div *ngIf="hashData.hashAlgo === 'PBKDF2'">
+          <div class="form-group">
+            <label for="saltText">Salt:</label>
+            <input type="text" class="form-control" id="saltText" formControlName="saltText">
+          </div>
+
+          <div class="form-group">
+            <label for="iterations">Iterations:</label>
+            <input type="number" class="form-control" id="iterations" formControlName="iterations">
+          </div>
+
+          <div class="form-group">
+            <label for="bits">Example test:</label>
+            <input type="number" class="form-control" id="bits" formControlName="bits">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+    <div class="col-md-4 col-md-offset-1">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">Hash Value</h3>
+        </div>
+        <div class="panel-body">
+          <p style="word-break: break-all"> {{hashValue | async}} </p>
+        </div>
+      </div>
+    </div>
   </div>
-
 </div>

@@ -36,7 +36,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
    1. Enable routing between Home, Subscribe, Login, User page 
       1. Create component and link home as start page => Done
       2. Create nav bar for selecting between components => Done
-      3. On Home ensure the testing possibility of the hash functions
+      3. On Home ensure the testing possibility of the hash functions => Done
+      4. Eval all entries at home before processing hash function.
       
    2. Ensure visibility of User Page only if loged in. 
       
