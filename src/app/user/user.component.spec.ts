@@ -12,7 +12,6 @@ describe('UserComponent', () => {
       declarations: [ UserComponent ],
       imports: [],
     }).compileComponents();
-    //MockNgRedux.reset();
   }));
 
   beforeEach(() => {

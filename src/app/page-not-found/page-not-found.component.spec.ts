@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { StoreModule } from "@ngrx/store";
+import { StoreModule } from '@ngrx/store';
 
 import { PageNotFoundComponent } from './page-not-found.component';
 
-import { rootReducer } from "../redux-store";
+import { rootReducer } from '../redux-store';
 
 describe('PageNotFoundComponent', () => {
   let component: PageNotFoundComponent;

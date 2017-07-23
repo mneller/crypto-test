@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { StoreModule } from "@ngrx/store";
+import { StoreModule } from '@ngrx/store';
 
 import { WebCryptoService } from '../web-crypto.service';
-import { rootReducer } from "../redux-store";
+import { rootReducer } from '../redux-store';
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {

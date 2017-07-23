@@ -6,8 +6,8 @@ import { AppComponent } from './app.component';
 import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {StoreModule} from "@ngrx/store";
-import {rootReducer} from "./redux-store";
+import {StoreModule} from '@ngrx/store';
+import {rootReducer} from './redux-store';
 
 
 
@@ -26,9 +26,6 @@ describe('AppComponent', () => {
       providers: [
       ],
     }).compileComponents();
-
-    // Reset the mock to start from a clean slate in each unit test.
-    //MockNgRedux.reset();
   }));
 
   it('should create the app', async(() => {

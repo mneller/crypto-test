@@ -19,17 +19,23 @@
         <div *ngIf="hashData.hashAlgo === 'PBKDF2'">
           <div class="form-group">
             <label for="saltText">Salt:</label>
-            <input type="text" class="form-control" id="saltText" formControlName="saltText">
+            <input type="text" class="form-control" id="saltText" formControlName="saltText" required>
           </div>
 
           <div class="form-group">
             <label for="iterations">Iterations:</label>
-            <input type="number" class="form-control" id="iterations" formControlName="iterations">
+            <input type="number" class="form-control" id="iterations" formControlName="iterations" required>
+          </div>
+          <div *ngIf="formErrors.iterations" class="alert alert-danger">
+            {{ formErrors.iterations }}
           </div>
 
           <div class="form-group">
-            <label for="bits">Example test:</label>
-            <input type="number" class="form-control" id="bits" formControlName="bits">
+            <label for="bytes">Number of Bytes:</label>
+            <input type="number" class="form-control" id="bytes" formControlName="bytes" required>
+          </div>
+          <div *ngIf="formErrors.bytes" class="alert alert-danger">
+            {{ formErrors.bytes }}
           </div>
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
