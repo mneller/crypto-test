@@ -1,7 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
+import { StoreModule } from "@ngrx/store";
 
 import { SubscribeComponent } from './subscribe.component';
+
+import { rootReducer } from "../redux-store";
 
 describe('SubscribeComponent', () => {
   let component: SubscribeComponent;
@@ -10,7 +12,7 @@ describe('SubscribeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SubscribeComponent ],
-      imports: [],
+      imports: [StoreModule.forRoot({rootReducer})],
     }).compileComponents();
     // MockNgRedux.reset();
   }));

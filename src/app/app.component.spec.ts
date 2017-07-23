@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {StoreModule} from "@ngrx/store";
+import {rootReducer} from "./redux-store";
 
 
 
@@ -16,7 +18,11 @@ describe('AppComponent', () => {
         AppComponent
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [HttpModule, FormsModule],
+      imports: [
+        HttpModule,
+        FormsModule,
+        StoreModule.forRoot({ rootReducer })
+      ],
       providers: [
       ],
     }).compileComponents();

@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
+import { StoreModule } from "@ngrx/store";
 
 import { LoginComponent } from './login.component';
+import { rootReducer } from "../redux-store";
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -10,10 +11,9 @@ describe('LoginComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LoginComponent ],
-      imports: [],
+      imports: [ StoreModule.forRoot({ rootReducer})],
     })
     .compileComponents();
-    //MockNgRedux.reset();
   }));
 
   beforeEach(() => {

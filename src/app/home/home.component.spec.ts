@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { StoreModule } from "@ngrx/store";
 
 import { WebCryptoService } from '../web-crypto.service';
+import { rootReducer } from "../redux-store";
 import { HomeComponent } from './home.component';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -15,7 +15,13 @@ describe('HomeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ HomeComponent ],
-      imports: [ BrowserModule, ReactiveFormsModule, WebCryptoService ],
+      imports: [
+        BrowserModule,
+        ReactiveFormsModule,
+        // WebCryptoService,
+        StoreModule.forRoot({ rootReducer })
+      ],
+
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [WebCryptoService],
     })
