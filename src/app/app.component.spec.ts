@@ -1,6 +1,6 @@
 
 import { TestBed, async } from '@angular/core/testing';
-import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
+// import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
 
 import { AppComponent } from './app.component';
 import {HttpModule} from '@angular/http';
@@ -16,13 +16,13 @@ describe('AppComponent', () => {
         AppComponent
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [HttpModule, FormsModule, NgReduxTestingModule],
+      imports: [HttpModule, FormsModule],
       providers: [
       ],
     }).compileComponents();
 
     // Reset the mock to start from a clean slate in each unit test.
-    MockNgRedux.reset();
+    //MockNgRedux.reset();
   }));
 
   it('should create the app', async(() => {

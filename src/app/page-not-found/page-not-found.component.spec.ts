@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
+// import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
 
 import { PageNotFoundComponent } from './page-not-found.component';
 
@@ -10,9 +10,9 @@ describe('PageNotFoundComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PageNotFoundComponent ],
-      imports: [NgReduxTestingModule],
+      imports: [],
     }).compileComponents();
-    MockNgRedux.reset();
+    // MockNgRedux.reset();
   }));
 
   beforeEach(() => {

@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
 // *** Redux: ***
-import { NgReduxModule, NgRedux } from '@angular-redux/store';
+import {Store, StoreModule} from '@ngrx/store';
 import { rootReducer, IAppState, INIT_STATE} from './redux-store';
 
 // *** Application components: ***
@@ -15,7 +15,7 @@ import { SubscribeComponent } from './subscribe/subscribe.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import {WebCryptoService} from './web-crypto.service';
+import { WebCryptoService } from './web-crypto.service';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -47,14 +47,16 @@ const appRoutes: Routes = [
     BrowserModule,
     ReactiveFormsModule,
     HttpModule,
-    NgReduxModule
+    StoreModule.forRoot({ rootReducer })
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [WebCryptoService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  /*
   constructor(reduxStore: NgRedux<IAppState>) {
     reduxStore.configureStore(rootReducer, INIT_STATE);
   } // of constructor.
+  */
 }  // of class AppModule

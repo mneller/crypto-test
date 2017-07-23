@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NgRedux } from '@angular-redux/store';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+
 import { IAppState } from '../redux-store';
 import { NavActions } from '../nav-actions';
 import { WebCryptoService } from '../web-crypto.service';
-import { Observable } from 'rxjs/Observable';
 
 export interface HashDataSet {
   hashAlgo: string;
@@ -34,12 +35,12 @@ export class HomeComponent implements OnInit {
 
   hashValue: Observable<string>;
 
-  constructor(private reduxStore: NgRedux<IAppState>, private  cryptoService: WebCryptoService, private fb: FormBuilder) {
+  constructor(private _store: Store<IAppState>, private  cryptoService: WebCryptoService, private fb: FormBuilder) {
 
   } // of constructor.
 
   ngOnInit() {
-    this.reduxStore.dispatch(
+    this._store.dispatch(
       NavActions.selectComponent('Home')
     );
     this.buildForm();

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { select} from '@angular-redux/store';
+import {Store} from '@ngrx/store';
+
 import { Observable } from 'rxjs/Observable';
+import {IAppState} from './redux-store';
+
 
 @Component({
   selector: 'app-root',
@@ -11,10 +14,11 @@ export class AppComponent {
   title = 'Cypto test!';
   // exampleText = '';
   // hashValue = '';
-  @select() readonly activeComponent: Observable<string>;
+  activeComponent: Observable<string>;
   activeComp = 'Home';
 
-  constructor() {
+  constructor(private _store: Store<IAppState>) {
+    this.activeComponent = this._store.select('activeComponent');
     this.activeComponent.subscribe(x => this.activeComp = x);
   } // of constructor.
 

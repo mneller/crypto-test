@@ -1,10 +1,10 @@
 /**
  * Created by eller on 01.07.17.
  */
-import { Action } from 'redux';
+import { Action } from '@ngrx/store';
 
 export interface MyAction extends Action {
-  payload: any;
+  payload?: any;
 }
 
 export class NavActions {

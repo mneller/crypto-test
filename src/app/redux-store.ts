@@ -8,7 +8,7 @@ export const INIT_STATE: IAppState = {
   activeComponent: 'Home',
 };
 
-export function rootReducer (lastState: IAppState, action: MyAction): IAppState {
+export function rootReducer (lastState: IAppState = INIT_STATE, action: MyAction): IAppState {
   switch (action.type) {
     case NavActions.SELECT_COMPONENT:
       console.log('SELECT COMPONENT: ' + JSON.stringify(action));
