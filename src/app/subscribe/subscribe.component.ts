@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { IAppState } from '../redux-store';
+import { AppState } from '../redux-store';
 import { NavActions } from '../nav-actions';
 
 @Component({
@@ -11,7 +11,7 @@ import { NavActions } from '../nav-actions';
 })
 export class SubscribeComponent implements OnInit {
 
-  constructor(private _store: Store<IAppState>) { }
+  constructor(private _store: Store<AppState>) { }
 
   ngOnInit() {
     this._store.dispatch(

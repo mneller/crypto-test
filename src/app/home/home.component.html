@@ -12,11 +12,11 @@
         </div>
 
         <div class="form-group">
-          <label for="exampleText">Example test:</label>
-          <input type="text" class="form-control" id="exampleText" formControlName="exampleText">
+          <label for="message">Example test:</label>
+          <input type="text" class="form-control" id="message" formControlName="message">
         </div>
 
-        <div *ngIf="hashData.hashAlgo === 'PBKDF2'">
+        <div *ngIf="hashParameter.hashAlgo === 'PBKDF2'">
           <div class="form-group">
             <label for="saltText">Salt:</label>
             <input type="text" class="form-control" id="saltText" formControlName="saltText" required>
@@ -47,7 +47,7 @@
           <h3 class="panel-title">Hash Value</h3>
         </div>
         <div class="panel-body">
-          <p style="word-break: break-all"> {{hashValue | async}} </p>
+          <p style="word-break: break-all"> {{hashValue}} </p>
         </div>
       </div>
     </div>

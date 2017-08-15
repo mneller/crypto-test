@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
+import { AppState } from "./redux-store";
+import { Store } from "@ngrx/store";
+import {HashParameter, HomeState} from "./home/home.reducer";
+import { HomeActions } from "./home/home-actions";
 
 
 @Injectable()
@@ -26,7 +30,33 @@ export class WebCryptoService {
   private encryptName = 'AES-GCM';
   private encryptBits = 256; // can be also 32, 64, 96, 104, 112, 120 or 128 (default)
 
-  constructor() { }
+  private homeState: Observable<HomeState>;
+
+  constructor(private _store: Store<AppState>) {
+    // this._store.select('homeState', 'hashParameter')
+    // this.homeState =  this._store.select('homeState');
+    console.log("CyptoServiceCreated :-)");
+    this._store.select('homeState', 'hashParameter')
+      .subscribe(hp => this.onHashParameterChange(hp));
+  }
+
+  // *****************************
+  // *** Handle Redux Actions: ***
+  // *****************************
+  onHashParameterChange(hp: HashParameter) {
+  console.log('onHashParameter with hp ' + JSON.stringify(hp));
+    if(hp) {
+      let hashValue: Observable<string>;
+      if (hp.hashAlgo === 'PBKDF2') {
+        hashValue = this.pbkdf2Hash(hp.message, hp.saltText,
+          hp.iterations, hp.bytes * 8);
+      } else {
+        hashValue = this.hashValue(hp.message);
+      }
+      hashValue.subscribe(
+        hv => this._store.dispatch(HomeActions.newHash(hv)));
+    }
+  } // of onHashParameterChange(hp: HashParameter).
 
   // ***************************
   // *** Service Functions : ***

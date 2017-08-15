@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {Store} from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
-import {IAppState} from './redux-store';
+import { AppState } from './redux-store';
 
 
 @Component({
@@ -17,8 +17,8 @@ export class AppComponent {
   activeComponent: Observable<string>;
   activeComp = 'Home';
 
-  constructor(private _store: Store<IAppState>) {
-    this.activeComponent = this._store.select('activeComponent');
+  constructor(private _store: Store<AppState>) {
+    this.activeComponent = this._store.select('navState', 'activeComponent');
     this.activeComponent.subscribe(x => this.activeComp = x);
   } // of constructor.
 

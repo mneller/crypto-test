@@ -1,19 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 
-import { IAppState } from '../redux-store';
+import { AppState } from '../redux-store';
 import { NavActions } from '../nav-actions';
-import { WebCryptoService } from '../web-crypto.service';
+import {HashParameter, HomeState, INIT_HOME_STATE} from "./home.reducer";
+import {HomeActions} from "./home-actions";
+import {Observable} from "rxjs/Observable";
+import {WebCryptoService} from "../web-crypto.service";
 
-export interface HashDataSet {
-  hashAlgo: string;
-  exampleText: string;
-  saltText: string;
-  iterations: number;
-  bytes: number
-};
 
 
 @Component({
@@ -23,22 +18,20 @@ export interface HashDataSet {
 })
 export class HomeComponent implements OnInit {
 
+  homeState: Observable<HomeState>;
+
   hashForm: FormGroup;
 
-  hashData: HashDataSet = {
-    hashAlgo: 'PBKDF2',
-    exampleText: '',
-    saltText: 'hugo',
-    iterations: 1000,
-    bytes: 256 / 8
-  };
+  // TODO: Smart or dump component?
+  hashParameter: HashParameter; //= INIT_HOME_STATE.hashParameter ;
+  hashValue: string; //  = 'Hugo';
 
-  hashValue: Observable<string>;
+  //hashValue: Observable<string>;
 
   // *** Error Handling: ***
   formErrors = {
     hashAlgo: '',
-    exampleText: '',
+    message: '',
     saltText: '',
     iterations: '',
     bytes: ''
@@ -46,7 +39,7 @@ export class HomeComponent implements OnInit {
 
   validationMessages = {
     hashAlgo: '',
-    exampleText: '',
+    message: '',
     saltText: '',
     iterations: {
       required: 'Interations is required.',
@@ -60,30 +53,77 @@ export class HomeComponent implements OnInit {
     }
   };
 
-  constructor(private _store: Store<IAppState>, private  cryptoService: WebCryptoService, private fb: FormBuilder) {
-
-  } // of constructor.
+  constructor(private _store: Store<AppState>, private fb: FormBuilder, private webcrypto:WebCryptoService) {
+    this.homeState =  this._store.select('homeState');
+  }
+  // of constructor.
 
   ngOnInit() {
     this._store.dispatch(
       NavActions.selectComponent('Home')
     );
+    console.log("homeState === " + this.homeState);
+/*
+    this.homeState
+    //this._store.select('homeState').
+      .subscribe(p => {
+        if(p) {
+          console.log("p ==> " + JSON.stringify(p));
+          this.hashParameter = p.hashParameter;
+          this.hashValue = p.hashValue;
+        } else {
+          console.log("p is empty: " + JSON.stringify(p));
+        }
+      });
+*/
+    this._store.select(state => state.homeState)
+      .subscribe(v => {
+          console.log("homestate: hashParameter" + JSON.stringify(v.hashParameter));
+          this.hashValue = v.hashValue;
+          this.hashParameter = v.hashParameter;
+        }
+      );
+
+    ;
+
+    /* this._store.select(state => {
+      console.log('**** state ==== ' + JSON.stringify(state));
+      this.hashParameter = state.homeState.hashParameter;});
+    */
+    /*
+    this._store.select(state => state.homeState)
+      .map((value, index) => value)
+      .subscribe(v => this.hashValue = v.hashValue);
+*/
+/*
+    this._store.select('homeState', 'hashParameter')
+        .subscribe( p => {
+            console.log("(2) p ==> " + p);
+            if (p) {
+              this.hashParameter = p
+            } else {
+              console.log("p isn't true");
+              this.hashParameter = INIT_HOME_STATE.hashParameter;
+            }
+          });
+*/
     this.buildForm();
+
   } // of ngOnInit().
 
   buildForm() {
 
     this.hashForm = this.fb.group({
-      hashAlgo: [this.hashData.hashAlgo ],
-      exampleText: [this.hashData.exampleText],
-      saltText: [this.hashData.saltText, [
+      hashAlgo: [this.hashParameter.hashAlgo ],
+      message: [this.hashParameter.message],
+      saltText: [this.hashParameter.saltText, [
       ]],
-      iterations: [this.hashData.iterations, [
+      iterations: [this.hashParameter.iterations, [
         Validators.required,
         Validators.min(1),
         Validators.max(1000000)
       ]],
-      bytes: [this.hashData.bytes, [
+      bytes: [this.hashParameter.bytes, [
         Validators.required,
         Validators.min(1),
         Validators.max(10000)
@@ -115,22 +155,26 @@ export class HomeComponent implements OnInit {
           });
         }
       });
-      this.hashData = this.hashForm.value;
+      this.hashParameter = this.hashForm.value;
     } // of this.hashForm.
   } // of onValueChange(data?: any).
 
   onSubmit() {
-    console.log('exampleText = ' + this.hashData.exampleText);
-    console.log('hashAlgo = ' + this.hashData.hashAlgo);
+    console.log('message = ' + this.hashParameter.message);
+    console.log('hashAlgo = ' + this.hashParameter.hashAlgo);
 
-    if (this.hashData.hashAlgo === 'PBKDF2') {
+    this._store.dispatch(HomeActions.updateHashParameter(this.hashParameter));
+    // this.webcrypto.onHashParameterChange(this.hashParameter);
+    /*
+    if (this.hashParameter.hashAlgo === 'PBKDF2') {
       console.log('PBKDF2');
-      this.hashValue = this.cryptoService.pbkdf2Hash(this.hashData.exampleText, this.hashData.saltText,
-                                            this.hashData.iterations, this.hashData.bytes * 8);
+      this.hashValue = this.cryptoService.pbkdf2Hash(this.hashParameter.message, this.hashParameter.saltText,
+                                            this.hashParameter.iterations, this.hashParameter.bytes * 8);
     } else {
       console.log('SHA-256');
-      this.hashValue = this.cryptoService.hashValue(this.hashData.exampleText);
+      this.hashValue = this.cryptoService.hashValue(this.hashParameter.message);
     }
+    */
   } // onSubmit().
 
 
