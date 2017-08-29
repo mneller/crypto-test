@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Store} from '@ngrx/store';
-import { AppState } from '../redux-store';
-import { NavActions } from '../nav-actions';
-
+import {Component, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {State} from "../app.state";
 
 @Component({
   selector: 'app-login',
@@ -11,12 +9,14 @@ import { NavActions } from '../nav-actions';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private _store: Store<AppState>) { }
+  constructor(private _store: Store<State>) { }
 
   ngOnInit() {
+    /*
     this._store.dispatch(
       NavActions.selectComponent('Login')
     );
+    */
   } // of ngOnInit().
 
 }

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Store} from '@ngrx/store';
+import {State} from "../app.state";
 
-import { AppState } from '../redux-store';
-import { NavActions } from '../nav-actions';
 
 
 @Component({
@@ -12,11 +11,11 @@ import { NavActions } from '../nav-actions';
 })
 export class PageNotFoundComponent implements OnInit {
 
-  constructor(private _store: Store<AppState>) { }
+  constructor(private _store: Store<State>) { }
 
-  ngOnInit() {
+  ngOnInit() { /*
     this._store.dispatch(
       NavActions.selectComponent('PageNotFound')
-    );
+    ); */
   } // of ngOnInit
 }

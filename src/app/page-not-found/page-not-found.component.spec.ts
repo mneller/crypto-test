@@ -1,9 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {StoreModule} from '@ngrx/store';
 
-import { PageNotFoundComponent } from './page-not-found.component';
+import {PageNotFoundComponent} from './page-not-found.component';
 
-import { rootReducer } from '../redux-store';
+import {homeReducer} from "../home/home.reducer";
+import {navReducer} from "../home/nav.reducer";
 
 describe('PageNotFoundComponent', () => {
   let component: PageNotFoundComponent;
@@ -12,7 +13,7 @@ describe('PageNotFoundComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PageNotFoundComponent ],
-      imports: [StoreModule.forRoot({ rootReducer})],
+      imports: [StoreModule.forRoot({navState: navReducer, homeState: homeReducer})],
     }).compileComponents();
   }));
 

@@ -1,15 +1,11 @@
-
-import { TestBed, async } from '@angular/core/testing';
-// import { NgReduxTestingModule, MockNgRedux } from '@angular-redux/store/testing';
-
-import { AppComponent } from './app.component';
+import {async, TestBed} from '@angular/core/testing';
+import {AppComponent} from './app.component';
 import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {StoreModule} from '@ngrx/store';
-import {rootReducer} from './redux-store';
-
-
+import {homeReducer} from "./home/home.reducer";
+import {navReducer} from "./home/nav.reducer";
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -21,7 +17,7 @@ describe('AppComponent', () => {
       imports: [
         HttpModule,
         FormsModule,
-        StoreModule.forRoot({ rootReducer })
+        StoreModule.forRoot({navState: navReducer, homeState: homeReducer})
       ],
       providers: [
       ],

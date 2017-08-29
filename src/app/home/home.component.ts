@@ -1,14 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { Store } from '@ngrx/store';
-
-import { AppState } from '../redux-store';
-import { NavActions } from '../nav-actions';
-import {HashParameter, HomeState, INIT_HOME_STATE} from "./home.reducer";
-import {HomeActions} from "./home-actions";
-import {Observable} from "rxjs/Observable";
-import {WebCryptoService} from "../web-crypto.service";
-
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs/Observable';
+import {WebCryptoService} from '../web-crypto.service';
+import {HashParameter, HomeState, State} from "../app.state";
 
 
 @Component({
@@ -22,11 +17,8 @@ export class HomeComponent implements OnInit {
 
   hashForm: FormGroup;
 
-  // TODO: Smart or dump component?
-  hashParameter: HashParameter; //= INIT_HOME_STATE.hashParameter ;
-  hashValue: string; //  = 'Hugo';
-
-  //hashValue: Observable<string>;
+  hashParameter: HashParameter;
+  hashValue: string;
 
   // *** Error Handling: ***
   formErrors = {
@@ -53,60 +45,20 @@ export class HomeComponent implements OnInit {
     }
   };
 
-  constructor(private _store: Store<AppState>, private fb: FormBuilder, private webcrypto:WebCryptoService) {
-    this.homeState =  this._store.select('homeState');
+  constructor(private _store: Store<State>, private fb: FormBuilder) {
+    console.log('Home constructore');
+    this.homeState =  this._store.select('app', 'homeState');
   }
   // of constructor.
 
   ngOnInit() {
-    this._store.dispatch(
-      NavActions.selectComponent('Home')
-    );
-    console.log("homeState === " + this.homeState);
-/*
     this.homeState
-    //this._store.select('homeState').
-      .subscribe(p => {
-        if(p) {
-          console.log("p ==> " + JSON.stringify(p));
-          this.hashParameter = p.hashParameter;
-          this.hashValue = p.hashValue;
-        } else {
-          console.log("p is empty: " + JSON.stringify(p));
-        }
-      });
-*/
-    this._store.select(state => state.homeState)
-      .subscribe(v => {
-          console.log("homestate: hashParameter" + JSON.stringify(v.hashParameter));
+      .subscribe((v: HomeState) => {
+          // console.log('homestate: v ' + JSON.stringify(v));
           this.hashValue = v.hashValue;
           this.hashParameter = v.hashParameter;
         }
       );
-
-    ;
-
-    /* this._store.select(state => {
-      console.log('**** state ==== ' + JSON.stringify(state));
-      this.hashParameter = state.homeState.hashParameter;});
-    */
-    /*
-    this._store.select(state => state.homeState)
-      .map((value, index) => value)
-      .subscribe(v => this.hashValue = v.hashValue);
-*/
-/*
-    this._store.select('homeState', 'hashParameter')
-        .subscribe( p => {
-            console.log("(2) p ==> " + p);
-            if (p) {
-              this.hashParameter = p
-            } else {
-              console.log("p isn't true");
-              this.hashParameter = INIT_HOME_STATE.hashParameter;
-            }
-          });
-*/
     this.buildForm();
 
   } // of ngOnInit().
@@ -160,23 +112,9 @@ export class HomeComponent implements OnInit {
   } // of onValueChange(data?: any).
 
   onSubmit() {
-    console.log('message = ' + this.hashParameter.message);
-    console.log('hashAlgo = ' + this.hashParameter.hashAlgo);
 
-    this._store.dispatch(HomeActions.updateHashParameter(this.hashParameter));
-    // this.webcrypto.onHashParameterChange(this.hashParameter);
-    /*
-    if (this.hashParameter.hashAlgo === 'PBKDF2') {
-      console.log('PBKDF2');
-      this.hashValue = this.cryptoService.pbkdf2Hash(this.hashParameter.message, this.hashParameter.saltText,
-                                            this.hashParameter.iterations, this.hashParameter.bytes * 8);
-    } else {
-      console.log('SHA-256');
-      this.hashValue = this.cryptoService.hashValue(this.hashParameter.message);
-    }
-    */
+    this._store.dispatch({type: 'UPDATE_HASH_PARAMETER', payload: {hashParameter: this.hashParameter}});
+
   } // onSubmit().
-
-
 
 } // of class HomeComponent.

@@ -1,9 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
-
-import { SubscribeComponent } from './subscribe.component';
-
-import { rootReducer } from '../redux-store';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {StoreModule} from '@ngrx/store';
+import {SubscribeComponent} from './subscribe.component';
+import {homeReducer} from "../home/home.reducer";
+import {navReducer} from "../home/nav.reducer";
 
 describe('SubscribeComponent', () => {
   let component: SubscribeComponent;
@@ -12,7 +11,7 @@ describe('SubscribeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SubscribeComponent ],
-      imports: [StoreModule.forRoot({rootReducer})],
+      imports: [StoreModule.forRoot({navState: navReducer, homeState: homeReducer})],
     }).compileComponents();
     // MockNgRedux.reset();
   }));
