@@ -43,9 +43,13 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
       
       (https://github.com/angular-redux/store/blob/master/articles/quickstart.md)
       1. Ensure state mgmt with Redux => Done
+        TODO: Reactivate new isActive 
+        TODO: Test reactivation...
+        
       2. Create the login page 
    3. Ensure User Creating with Subscribe
    4. Modify the Home page to show the hash modeles supported
+      => Done
    5. Create a AES page for logged in users
 
 ## Done

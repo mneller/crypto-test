@@ -14,40 +14,35 @@ import {WebCryptoService} from './web-crypto.service';
 import {appReducer, initialState, StateEffects} from "./app.state";
 import {EffectsModule} from "@ngrx/effects";
 import {StoreRouterConnectingModule} from "@ngrx/router-store";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {environment} from "../environments/environment";
+import {AppRouterModule} from "./app-router.module";
+import {HomeModule} from "./home/home.module";
 
-const appRoutes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'subscribe',      component: SubscribeComponent },
-  { path: 'login',      component: LoginComponent },
-  { path: '',
-    redirectTo: '/home',
-    pathMatch: 'full'
-  },
-  { path: '**', component: PageNotFoundComponent }
-];
 
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    SubscribeComponent,
-    LoginComponent,
-    UserComponent,
-    PageNotFoundComponent
-  ],
+
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     HttpModule,
+
+    AppRouterModule,
+    HomeModule,
+
     StoreModule.forRoot(<any>{app: appReducer}, {initialState}),
     EffectsModule.forRoot([StateEffects]),
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: false } // <-- debugging purposes only
-    ),
-    StoreRouterConnectingModule
+    StoreRouterConnectingModule,
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+  ],
+  declarations: [
+    AppComponent,
+    SubscribeComponent,
+    LoginComponent,
+    UserComponent,
+    PageNotFoundComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [WebCryptoService],

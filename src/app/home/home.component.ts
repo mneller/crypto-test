@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs/Observable';
-import {WebCryptoService} from '../web-crypto.service';
-import {HashParameter, HomeState, State} from "../app.state";
+import {State, HomeState} from "./home.reducer";
+import {HashParameter} from "./home.actions";
 
 
 @Component({
@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private _store: Store<State>, private fb: FormBuilder) {
     console.log('Home constructore');
-    this.homeState =  this._store.select('app', 'homeState');
+    this.homeState =  this._store.select('homeState');
   }
   // of constructor.
 

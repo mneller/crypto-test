@@ -1,71 +1,55 @@
-import {RouterAction} from "@ngrx/router-store";
 import {Injectable} from "@angular/core";
-import {Actions, Effect} from "@ngrx/effects";
-import {Store} from "@ngrx/store";
-import {WebCryptoService} from "./web-crypto.service";
+import {Action} from "@ngrx/store";
 import 'rxjs/add/operator/switchMap';
-import {Observable} from "rxjs/Observable";
 
-// **************
-// *** State: ***
-// **************
+// ***************
+// *** Action: ***
+// ***************
 
-export type HashParameter = { hashAlgo: string, saltText: string, iterations: number, bytes: number, message: string };
-export type HomeState = { hashParameter: HashParameter, hashValue: string };
+export const SELECT_TAB = '[NAV] tab selected'
+export enum Tabs {
+  PageNotFound,
+  Home,
+  Login,
+  Subscribe,
+  User
+}
 
-export type AppState = { homeState: HomeState};
-export type State = { app: AppState};
+export class SelectTab implements Action {
+  readonly type = SELECT_TAB;
 
+  constructor(public payload: Tabs) {};
 
-export const INIT_HOME_STATE: HomeState = {
-  hashParameter: {
-    hashAlgo: 'PBKDF2',
-    saltText: 'hugo',
-    iterations: 1000,
-    bytes: 256 / 8,
-    message: ''
-  },
-  hashValue: 'tbd'
+}
+
+export type Actions = SelectTab;
+
+export interface State {
+  nav: Tabs;
 };
 
 export const initialState: State = {
-  app: {
-    homeState: INIT_HOME_STATE
-  }
+  nav: Tabs.Home
 };
 
-// ****************
-// *** Actions: ***
-// ****************
-export type UpdateHashParameter = {type: 'UPDATE_HASH_PARAMETER', payload: {hashParameter: HashParameter}};
-export type NewHash = {type: 'NEW_HASH', payload: {hashValue: string}};
-
-type Action = RouterAction<State> | UpdateHashParameter | NewHash;
 
 // ****************
 // *** Reducer: ***
 // ****************
 
-export function appReducer(state: AppState, action: Action): AppState {
-  // console.log('appReducer with action.type: ' + action.type);
-  // console.log('appReducer with state: ' + JSON.stringify(state));
+export function appReducer(state: State, action: Actions): State {
   if(action.payload) {
     console.log('appReducer with payload: ' + action.payload.toString());
   }
-  let newState = {homeState: {...(state.homeState)}};
+  //let newState = {homeState: {...(state.homeState)}};
   // Comment: I had the problem that the changes of the hashValue were not triggere :-(
   // This because let newState = {...state} isn't triggering a new homeState object
   // This feature to understand costs me hours and is one of the most valuable learing f
   // from this excersise :-)
 
   switch (action.type) {
-    case 'UPDATE_HASH_PARAMETER':
-      newState.homeState.hashParameter = action.payload.hashParameter;
-      return newState;
-    case 'NEW_HASH':
-      console.log('newHash');
-      newState.homeState.hashValue = action.payload.hashValue;
-      return newState;
+    case SELECT_TAB:
+      return Object.assign({}, state, {nav: action.payload});
     default:
       return state;
   } // of switch (action.type).
@@ -74,24 +58,32 @@ export function appReducer(state: AppState, action: Action): AppState {
 @Injectable()
 export class StateEffects {
 
-  constructor(private actions: Actions, private store: Store<AppState>, private webCryptoService: WebCryptoService) {}
+  // constructor(private actions: Actions, private store: Store<AppState>, private webCryptoService: WebCryptoService) {}
+  //
+  // @Effect() updateHashValue = this.actions.ofType('UPDATE_HASH_PARAMETER').
+  //   switchMap(  (p: UpdateHashParameter) => {
+  //   // console.log('EFFECT-UPDATE-HASH-PARAMETER: ' + JSON.stringify(p));
+  //     const hashParam = p.payload.hashParameter;
+  //     let result: Observable<string>;
+  //     if (hashParam.hashAlgo === 'PBKDF2') {
+  //       result = this.webCryptoService.pbkdf2Hash(
+  //         hashParam.message,
+  //         hashParam.saltText,
+  //         hashParam.iterations,
+  //         hashParam.bytes * 8
+  //       );
+  //     } else {
+  //       result = this.webCryptoService.hashValue(hashParam.message);
+  //     }
+  //     return result.map((newHash: string) => ({type: 'NEW_HASH', payload: {hashValue: newHash}}));
+  //   }); // of Effect() updateHashValue.
 
-  @Effect() updateHashValue = this.actions.ofType('UPDATE_HASH_PARAMETER').
-    switchMap(  (p: UpdateHashParameter) => {
-    // console.log('EFFECT-UPDATE-HASH-PARAMETER: ' + JSON.stringify(p));
-      const hashParam = p.payload.hashParameter;
-      let result: Observable<string>;
-      if (hashParam.hashAlgo === 'PBKDF2') {
-        result = this.webCryptoService.pbkdf2Hash(
-          hashParam.message,
-          hashParam.saltText,
-          hashParam.iterations,
-          hashParam.bytes * 8
-        );
-      } else {
-        result = this.webCryptoService.hashValue(hashParam.message);
-      }
-      return result.map((newHash: string) => ({type: 'NEW_HASH', payload: {hashValue: newHash}}));
-    }); // of Effect() updateHashValue.
+  // @Effect() navbarAction = this.actions.ofType(ROUTER_NAVIGATION).
+  //   // subscribe((r: RouterNavigationAction) => {
+  //   map((r: RouterNavigationAction) => {
+  //     // console.log('NavAction: ' + JSON.stringify(r));
+  //     console.log('NavAction - payload ' + JSON.stringify(r.payload.routerState));
+  //     return null;
+  // });
 
 } // of class StateEffects.
