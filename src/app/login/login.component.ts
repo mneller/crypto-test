@@ -9,7 +9,8 @@ import {State} from "../app.state";
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private _store: Store<State>) { }
+  // constructor(private _store: Store<State>) { }
+  constructor() { }
 
   ngOnInit() {
     /*

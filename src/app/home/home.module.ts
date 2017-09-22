@@ -16,6 +16,7 @@ const homeRoutes: Routes = [
     RouterModule.forChild(homeRoutes)
   ],
   declarations: [HomeComponent],
-  providers: [WebCryptoService]
+  providers: [WebCryptoService],
+  exports: [RouterModule]
 })
 export class HomeModule {};

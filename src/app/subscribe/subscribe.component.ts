@@ -9,7 +9,10 @@ import {State} from "../app.state";
 })
 export class SubscribeComponent implements OnInit {
 
-  constructor(private _store: Store<State>) { }
+  // constructor(private _store: Store<State>) {
+  constructor() {
+    console.log("**** SubscribeComponent ****")
+  }
 
   ngOnInit() {
    /* this._store.dispatch(

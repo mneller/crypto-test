@@ -13,5 +13,6 @@ const subscribeRoutes: Routes = [
     RouterModule.forChild(subscribeRoutes)
   ],
   declarations: [SubscribeComponent],
+  // exports: [RouterModule],
 })
 export class SubscribeModule {};

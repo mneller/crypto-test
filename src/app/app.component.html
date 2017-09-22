@@ -23,10 +23,9 @@
           <li [class.active]="isActive('Subscribe')"><a href="/subscribe">Subscribe</a></li>
           <li [class.active]="isActive('Login')"><a href="/login">Login</a></li>
           -->
-          <li><a href="/">Home</a></li>
-          <li><a href="/subscribe">Subscribe</a></li>
-          <li><a href="/login">Login</a></li>
-
+          <li><a routerLink="home" routerLinkActive="active">Home</a></li>
+          <li><a routerLink="subscribe" routerLinkActive="active">Subscribe</a></li>
+          <li><a routerLink="login" routerLinkActive="active">Login</a></li>
         </ul>
       </div> <!-- of navbar-collapse -->
     </div> <!-- of class container-fluid -->
