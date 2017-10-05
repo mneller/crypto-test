@@ -4,19 +4,25 @@ import {HomeComponent} from "./home.component";
 import {WebCryptoService} from "../web-crypto.service";
 import {CommonModule} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
+import {StoreModule} from "@ngrx/store";
+import {reducer} from "./home.reducer";
+import {EffectsModule} from "@ngrx/effects";
+import {HomeEffects} from "./home.effect";
 
 const homeRoutes: Routes = [
-  { path: 'home', component: HomeComponent }
+  { path: '', component: HomeComponent }
 ];
+
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild(homeRoutes)
+    RouterModule.forChild(homeRoutes),
+    StoreModule.forFeature('home', reducer),
+    EffectsModule.forFeature([HomeEffects]),
   ],
   declarations: [HomeComponent],
   providers: [WebCryptoService],
-  exports: [RouterModule]
 })
 export class HomeModule {};

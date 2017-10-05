@@ -16,7 +16,7 @@
           <input type="text" class="form-control" id="message" formControlName="message">
         </div>
 
-        <div *ngIf="hashParameter.hashAlgo === 'PBKDF2'">
+        <div *ngIf="usePbkdf2()">
           <div class="form-group">
             <label for="saltText">Salt:</label>
             <input type="text" class="form-control" id="saltText" formControlName="saltText" required>

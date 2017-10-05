@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs/Observable';
-import {State, HomeState} from "./home.reducer";
-import {HashParameter} from "./home.actions";
+import {getHomeState, HomeState} from "./home.reducer";
+import {HashParameter, UpdateHashParameter} from "./home.actions";
+import {HashAlgo} from "../web-crypto.service";
 
 
 @Component({
@@ -45,31 +46,30 @@ export class HomeComponent implements OnInit {
     }
   };
 
-  constructor(private _store: Store<State>, private fb: FormBuilder) {
+  constructor(private _store: Store<HomeState>, private fb: FormBuilder) {
     console.log('Home constructore');
-    this.homeState =  this._store.select('homeState');
-  }
-  // of constructor.
+    this.homeState =  this._store.select(getHomeState);
+  } // of constructor.
 
   ngOnInit() {
-    this.homeState
-      .subscribe((v: HomeState) => {
-          // console.log('homestate: v ' + JSON.stringify(v));
-          this.hashValue = v.hashValue;
-          this.hashParameter = v.hashParameter;
-        }
-      );
+    this.homeState.subscribe((hs: HomeState) => {
+      console.log("hs == " + hs);
+      console.log("hs.hashParamer == " + hs.hashParameter);
+      console.log("hs.hashValue == " + hs.hashValue);
+
+      this.hashParameter = hs.hashParameter;
+      this.hashValue = hs.hashValue;
+    });
+
     this.buildForm();
 
   } // of ngOnInit().
 
   buildForm() {
-
     this.hashForm = this.fb.group({
-      hashAlgo: [this.hashParameter.hashAlgo ],
+      hashAlgo: [this.hashParameter.hashAlgo],
       message: [this.hashParameter.message],
-      saltText: [this.hashParameter.saltText, [
-      ]],
+      saltText: [this.hashParameter.saltText, []],
       iterations: [this.hashParameter.iterations, [
         Validators.required,
         Validators.min(1),
@@ -85,7 +85,6 @@ export class HomeComponent implements OnInit {
     this.hashForm.valueChanges.subscribe(
       data => this.onValueChange(data)
     );
-
   } // of createForm().
 
   onValueChange(data?: any) {
@@ -113,8 +112,13 @@ export class HomeComponent implements OnInit {
 
   onSubmit() {
 
-    this._store.dispatch({type: 'UPDATE_HASH_PARAMETER', payload: {hashParameter: this.hashParameter}});
+    // this._store.dispatch({type: 'UPDATE_HASH_PARAMETER', payload: {hashParameter: this.hashParameter}});
+    this._store.dispatch(new UpdateHashParameter(this.hashParameter));
 
   } // onSubmit().
+
+  usePbkdf2(): boolean {
+    return this.hashParameter.hashAlgo === HashAlgo.pbkdf2;
+  }
 
 } // of class HomeComponent.

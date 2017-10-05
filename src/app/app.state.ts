@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
-import {Action} from "@ngrx/store";
+import {Action, ActionReducerMap} from "@ngrx/store";
 import 'rxjs/add/operator/switchMap';
+import * as fromHome from './home/home.reducer';
 
 // ***************
 // *** Action: ***
@@ -18,18 +19,22 @@ export enum Tabs {
 export class SelectTab implements Action {
   readonly type = SELECT_TAB;
 
-  constructor(public payload: Tabs) {};
+  constructor(public payload: NavState) {};
 
+}
+
+export type NavState = {
+  selected: Tabs
 }
 
 export type Actions = SelectTab;
 
 export interface State {
-  nav: Tabs;
+  nav: NavState;
 };
 
-export const initialState: State = {
-  nav: Tabs.Home
+export const initialState: NavState = {
+  selected: Tabs.Home
 };
 
 
@@ -37,7 +42,7 @@ export const initialState: State = {
 // *** Reducer: ***
 // ****************
 
-export function appReducer(state: State, action: Actions): State {
+export function reducer(state: NavState = initialState, action: Actions): NavState {
   if(action.payload) {
     console.log('appReducer with payload: ' + action.payload.toString());
   }
@@ -53,7 +58,17 @@ export function appReducer(state: State, action: Actions): State {
     default:
       return state;
   } // of switch (action.type).
-} // appReducer(state: AppState, action: Action).
+} // reducer(state: NavState, action: Action).
+
+/**
+ * Our state is composed of a map of action reducer functions.
+ * These reducer functions are called with each dispatched action
+ * and the current or initial state and return a new immutable state.
+ */
+export const reducers: ActionReducerMap<State> = {
+  nav: reducer,
+  //home: fromHome.reducer
+};
 
 @Injectable()
 export class StateEffects {

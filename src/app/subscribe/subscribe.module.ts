@@ -4,7 +4,8 @@ import {CommonModule} from "@angular/common";
 import {SubscribeComponent} from "./subscribe.component";
 
 const subscribeRoutes: Routes = [
-  { path: 'subscribe', component: SubscribeComponent }
+  { path: '', component: SubscribeComponent },
+  // { path: '/subscribe', component: SubscribeComponent }
 ];
 
 @NgModule({

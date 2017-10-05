@@ -5,6 +5,15 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
+export enum HashAlgo {
+  sha256 = 'SHA-256',
+  pbkdf2 = 'PBKDF2'
+};
+
+
+// export const hashAlgoSHA256 = 'SHA-256';
+// export const hashAlgoPBKDF2 = 'PBKDF2';
+
 
 @Injectable()
 export class WebCryptoService {
@@ -12,7 +21,7 @@ export class WebCryptoService {
   // ************************************
   // *** Parameters for this service: ***
   // ************************************
-  public hashAlgo = 'SHA-256';
+
   public hashBits = 256;
     // Posssible values are SHA-1, SHA-256, SHA-384, and SHA-512.
     // Further information: https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
@@ -57,26 +66,31 @@ export class WebCryptoService {
   // ***********************
   hashValue(v: string): Observable<string> {
     const buf = this.enc.encode(v);
-    return Observable.fromPromise(this.myCrypto.subtle.digest(this.hashAlgo, buf))
+    return Observable.fromPromise(this.myCrypto.subtle.digest(HashAlgo.sha256, buf))
       .map(x => this.hexString(x));
   } // of  hashValue(v: string): Observable<string>.
 
 
   pbkdf2Hash(code: string, salt: string, interations: number, nbOfBits: number): Observable<string> {
     // Returns a PBKDF2 hash string observable of the code calculated based on the given parameters
+    console.log('pbkdf2Hash: code       <' + code +'>');
+    console.log('pbkdf2Hash: salt       <' + salt +'>');
+    console.log('pbkdf2Hash: iterations  ' + interations );
+    console.log('pbkdf2Hash: nbOfBits    ' + nbOfBits );
+
     const bytes = this.enc.encode(code);
 
     const saltBytes = this.enc.encode(salt);
 
     // Create the base key to derive from.
     const importedKey = this.myCrypto.subtle.importKey(
-      'raw', bytes, 'PBKDF2', false, ['deriveBits']);
+      'raw', bytes, HashAlgo.pbkdf2, false, ['deriveBits']);
 
     const result = importedKey.then(key => {
       // Salt should be at least 64 bits.
       // let salt = crypto.getRandomValues(new Uint8Array(8));
       // All required PBKDF2 parameters.
-      const params = {name: 'PBKDF2', hash: this.hashAlgo, salt: saltBytes, iterations: interations};
+      const params = {name: HashAlgo.pbkdf2, hash: HashAlgo.sha256, salt: saltBytes, iterations: interations};
       // console.log('params == ' + JSON.stringify(params));
       // Derive 160 bits using PBKDF2.
       return this.myCrypto.subtle.deriveBits(params, key, nbOfBits);
@@ -110,7 +124,7 @@ export class WebCryptoService {
           { name: 'PBKDF2',
             salt:  salt,
             iterations: 35,
-            hash: this.hashAlgo
+            hash: HashAlgo.pbkdf2
           },
           baseKey,
           { name: this.encryptName , length: this.encryptBits}, // Key we want
@@ -145,10 +159,10 @@ export class WebCryptoService {
     ).then(baseKey => {
       // console.log('base key generated');
       return this.myCrypto.subtle.deriveKey(
-          { name: 'PBKDF2',
+          { name: HashAlgo.pbkdf2,
             salt:  salt,
             iterations: 35,
-            hash: this.hashAlgo
+            hash: HashAlgo.pbkdf2
           },
           baseKey,
           { name: this.encryptName , length: this.encryptBits}, // Key we want
