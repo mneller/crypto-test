@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {State} from "../app.state";
 
 @Component({
   selector: 'app-login',

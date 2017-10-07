@@ -1,9 +1,9 @@
 import * as homeActions from './home.actions';
-import {ActionReducerMap, createFeatureSelector, createSelector} from "@ngrx/store";
-import {HashAlgo} from "../web-crypto.service";
+import {createFeatureSelector} from '@ngrx/store';
+import {HashAlgo} from '../web-crypto.service';
 
 
-export type HomeState = { hashParameter: homeActions.HashParameter , hashValue: string };
+export interface HomeState { hashParameter: homeActions.HashParameter , hashValue: string };
 
 export interface State {
   homeState: HomeState;
@@ -22,17 +22,15 @@ export const initialState: HomeState = {
 };
 
 export function reducer(
-  state:HomeState = initialState,
+  state: HomeState = initialState,
   action: homeActions.Actions
 ): HomeState {
-  console.log('home.reducer: Action.type ==> ' + action.type);
-  let newState = {...state};
+  const newState = {...state};
   switch (action.type) {
     case homeActions.UPDATE_HASH_PARAMETER:
       newState.hashParameter = action.payload;
       return newState;
     case homeActions.HASH_UPDATED:
-      console.log('newHash: ' + action.payload);
       newState.hashValue = action.payload;
       return newState;
     default: {

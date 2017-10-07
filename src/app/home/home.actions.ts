@@ -1,7 +1,13 @@
 import { Action } from '@ngrx/store';
-import {HashAlgo} from "../web-crypto.service";
+import {HashAlgo} from '../web-crypto.service';
 
-export type HashParameter = { hashAlgo: HashAlgo, saltText: string, iterations: number, bytes: number, message: string };
+export interface HashParameter {
+  hashAlgo: HashAlgo,
+  saltText: string,
+  iterations: number,
+  bytes: number,
+  message: string
+};
 export const UPDATE_HASH_PARAMETER = '[HOME] Update HashParameter';
 export const HASH_UPDATED = '[HOME] Hash updated';
 

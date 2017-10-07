@@ -1,7 +1,6 @@
-import {Injectable} from "@angular/core";
-import {Action, ActionReducerMap} from "@ngrx/store";
+import {Injectable} from '@angular/core';
+import {Action, ActionReducerMap} from '@ngrx/store';
 import 'rxjs/add/operator/switchMap';
-import * as fromHome from './home/home.reducer';
 
 // ***************
 // *** Action: ***
@@ -23,7 +22,7 @@ export class SelectTab implements Action {
 
 }
 
-export type NavState = {
+export interface NavState {
   selected: Tabs
 }
 
@@ -43,15 +42,6 @@ export const initialState: NavState = {
 // ****************
 
 export function reducer(state: NavState = initialState, action: Actions): NavState {
-  if(action.payload) {
-    console.log('appReducer with payload: ' + action.payload.toString());
-  }
-  //let newState = {homeState: {...(state.homeState)}};
-  // Comment: I had the problem that the changes of the hashValue were not triggere :-(
-  // This because let newState = {...state} isn't triggering a new homeState object
-  // This feature to understand costs me hours and is one of the most valuable learing f
-  // from this excersise :-)
-
   switch (action.type) {
     case SELECT_TAB:
       return Object.assign({}, state, {nav: action.payload});
@@ -67,7 +57,6 @@ export function reducer(state: NavState = initialState, action: Actions): NavSta
  */
 export const reducers: ActionReducerMap<State> = {
   nav: reducer,
-  //home: fromHome.reducer
 };
 
 @Injectable()

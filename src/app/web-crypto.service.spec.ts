@@ -112,7 +112,6 @@ describe('Test WebCryptoService without the TestBed', () => {
     it('pbkdf2Hash should deliver a correct values for password <' + testSet.password + '>', (done: DoneFn) => {
        service.pbkdf2Hash(testSet.password, testSet.salt, testSet.cycles , testSet.bits)
         .subscribe(value => {
-          // console.log('value == ' + value);
           expect(value).toBe(testSet.result);
           done();
         });
@@ -140,7 +139,6 @@ describe('Test WebCryptoService without the TestBed', () => {
         + '> and password <' + testSet.passwort + '>', (done: DoneFn) => {
       service.getUserPasswordHash(testSet.user, testSet.passwort)
         .subscribe(value => {
-          // console.log('value == ' + value);
           expect(value).toBe(testSet.result);
           done();
         });
@@ -181,7 +179,6 @@ describe('Test WebCryptoService without the TestBed', () => {
         + '> and message <' + testSet.message + '>', (done: DoneFn) => {
       service.encryptAES(testSet.passcode, testSet.message)
         .subscribe(value => {
-          // console.log('value == ' + value);
           expect(value).toBe(testSet.result);
           done();
         });
@@ -193,7 +190,6 @@ describe('Test WebCryptoService without the TestBed', () => {
       + '> and message <' + testSet.message + '>', (done: DoneFn) => {
       service.decryptAES(testSet.passcode, testSet.result)
         .subscribe(value => {
-          // console.log('value == ' + value);
           expect(value).toBe(testSet.message);
           done();
         });

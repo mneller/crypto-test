@@ -35,11 +35,7 @@ export class WebCryptoService {
   private encryptName = 'AES-GCM';
   private encryptBits = 256; // can be also 32, 64, 96, 104, 112, 120 or 128 (default)
 
-  constructor() {
-    // this._store.select('homeState', 'hashParameter')
-    // this.homeState =  this._store.select('homeState');
-    console.log('CyptoServiceCreated :-)');
-  }
+  constructor() {}
 
   // ***************************
   // *** Service Functions : ***
@@ -73,10 +69,10 @@ export class WebCryptoService {
 
   pbkdf2Hash(code: string, salt: string, interations: number, nbOfBits: number): Observable<string> {
     // Returns a PBKDF2 hash string observable of the code calculated based on the given parameters
-    console.log('pbkdf2Hash: code       <' + code +'>');
-    console.log('pbkdf2Hash: salt       <' + salt +'>');
-    console.log('pbkdf2Hash: iterations  ' + interations );
-    console.log('pbkdf2Hash: nbOfBits    ' + nbOfBits );
+    // console.log('pbkdf2Hash: code       <' + code + '>');
+    // console.log('pbkdf2Hash: salt       <' + salt + '>');
+    // console.log('pbkdf2Hash: iterations  ' + interations );
+    // console.log('pbkdf2Hash: nbOfBits    ' + nbOfBits );
 
     const bytes = this.enc.encode(code);
 
@@ -118,13 +114,13 @@ export class WebCryptoService {
 
     return Observable.fromPromise(
       this.myCrypto.subtle.importKey(
-        'raw', bytes, {'name': 'PBKDF2'}, false, ['deriveKey']
+        'raw', bytes, {'name': HashAlgo.pbkdf2}, false, ['deriveKey']
     ).then(baseKey => {
         return this.myCrypto.subtle.deriveKey(
-          { name: 'PBKDF2',
+          { name: HashAlgo.pbkdf2,
             salt:  salt,
             iterations: 35,
-            hash: HashAlgo.pbkdf2
+            hash: HashAlgo.sha256
           },
           baseKey,
           { name: this.encryptName , length: this.encryptBits}, // Key we want
@@ -155,14 +151,13 @@ export class WebCryptoService {
 
     return Observable.fromPromise(
       this.myCrypto.subtle.importKey(
-        'raw', bytes, {'name': 'PBKDF2'}, false, ['deriveKey']
+        'raw', bytes, {'name': HashAlgo.pbkdf2}, false, ['deriveKey']
     ).then(baseKey => {
-      // console.log('base key generated');
       return this.myCrypto.subtle.deriveKey(
           { name: HashAlgo.pbkdf2,
             salt:  salt,
             iterations: 35,
-            hash: HashAlgo.pbkdf2
+            hash: HashAlgo.sha256
           },
           baseKey,
           { name: this.encryptName , length: this.encryptBits}, // Key we want
@@ -170,7 +165,6 @@ export class WebCryptoService {
           ['encrypt', 'decrypt']              // For new key
         );
     }).then(deriveKey => {
-        // console.log('Derived key');
         return this.myCrypto.subtle.decrypt(
           { name: this.encryptName, iv: iv },
           deriveKey,

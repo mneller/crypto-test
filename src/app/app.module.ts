@@ -3,16 +3,13 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
 import {AppComponent} from './app.component';
-import {initialState, reducers, StateEffects} from "./app.state";
-import {EffectsModule} from "@ngrx/effects";
-import {StoreRouterConnectingModule} from "@ngrx/router-store";
-import {StoreDevtoolsModule} from "@ngrx/store-devtools";
-import {environment} from "../environments/environment";
-import {AppRouterModule} from "./app-router.module";
-import {HomeModule} from "./home/home.module";
-import {SubscribeModule} from "./subscribe/subscribe.module";
-import {LoginModule} from "./login/login.module";
-import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
+import {reducers, StateEffects} from './app.state';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreRouterConnectingModule} from '@ngrx/router-store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
+import {AppRouterModule} from './app-router.module';
+import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 
 
 @NgModule({

@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs/Observable';
-import {getHomeState, HomeState} from "./home.reducer";
-import {HashParameter, UpdateHashParameter} from "./home.actions";
-import {HashAlgo} from "../web-crypto.service";
+import {getHomeState, HomeState} from './home.reducer';
+import {HashParameter, UpdateHashParameter} from './home.actions';
+import {HashAlgo} from '../web-crypto.service';
 
 
 @Component({
@@ -47,16 +47,11 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(private _store: Store<HomeState>, private fb: FormBuilder) {
-    console.log('Home constructore');
     this.homeState =  this._store.select(getHomeState);
   } // of constructor.
 
   ngOnInit() {
     this.homeState.subscribe((hs: HomeState) => {
-      console.log("hs == " + hs);
-      console.log("hs.hashParamer == " + hs.hashParameter);
-      console.log("hs.hashValue == " + hs.hashValue);
-
       this.hashParameter = hs.hashParameter;
       this.hashValue = hs.hashValue;
     });
@@ -90,8 +85,6 @@ export class HomeComponent implements OnInit {
   onValueChange(data?: any) {
     if (this.hashForm) {
       // Only if the hashForm is set!
-      // console.log('data: ' + JSON.stringify(data));
-      // console.log('this.hashForm.data: ' +  JSON.stringify(this.hashForm.value));
       const form = this.hashForm;
 
       Object.keys(this.formErrors).map(field => {

@@ -3,8 +3,7 @@ import {StoreModule} from '@ngrx/store';
 
 import {PageNotFoundComponent} from './page-not-found.component';
 
-import {homeReducer} from "../home/home.reducer";
-import {navReducer} from "../home/nav.reducer";
+import {reducer} from '../home/home.reducer';
 
 describe('PageNotFoundComponent', () => {
   let component: PageNotFoundComponent;
@@ -13,7 +12,7 @@ describe('PageNotFoundComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PageNotFoundComponent ],
-      imports: [StoreModule.forRoot({navState: navReducer, homeState: homeReducer})],
+      imports: [StoreModule.forRoot({home: reducer})],
     }).compileComponents();
   }));
 

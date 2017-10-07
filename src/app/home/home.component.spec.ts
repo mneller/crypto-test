@@ -6,8 +6,7 @@ import {StoreModule} from '@ngrx/store';
 
 import {WebCryptoService} from '../web-crypto.service';
 import {HomeComponent} from './home.component';
-import {homeReducer} from "./home.reducer";
-import {navReducer} from "./nav.reducer";
+import {reducer} from './home.reducer';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -20,7 +19,7 @@ describe('HomeComponent', () => {
         BrowserModule,
         ReactiveFormsModule,
         // WebCryptoService,
-        StoreModule.forRoot({navState: navReducer, homeState: homeReducer})
+        StoreModule.forRoot({home: reducer})
       ],
 
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

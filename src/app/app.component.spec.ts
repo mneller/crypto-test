@@ -4,8 +4,7 @@ import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {StoreModule} from '@ngrx/store';
-import {homeReducer} from "./home/home.reducer";
-import {navReducer} from "./home/nav.reducer";
+import {reducer} from './home/home.reducer';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -17,7 +16,7 @@ describe('AppComponent', () => {
       imports: [
         HttpModule,
         FormsModule,
-        StoreModule.forRoot({navState: navReducer, homeState: homeReducer})
+        StoreModule.forRoot({homeState: reducer})
       ],
       providers: [
       ],

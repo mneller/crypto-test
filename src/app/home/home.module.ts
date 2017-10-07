@@ -1,13 +1,13 @@
-import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
-import {HomeComponent} from "./home.component";
-import {WebCryptoService} from "../web-crypto.service";
-import {CommonModule} from "@angular/common";
-import {ReactiveFormsModule} from "@angular/forms";
-import {StoreModule} from "@ngrx/store";
-import {reducer} from "./home.reducer";
-import {EffectsModule} from "@ngrx/effects";
-import {HomeEffects} from "./home.effect";
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {HomeComponent} from './home.component';
+import {WebCryptoService} from '../web-crypto.service';
+import {CommonModule} from '@angular/common';
+import {ReactiveFormsModule} from '@angular/forms';
+import {StoreModule} from '@ngrx/store';
+import {reducer} from './home.reducer';
+import {EffectsModule} from '@ngrx/effects';
+import {HomeEffects} from './home.effect';
 
 const homeRoutes: Routes = [
   { path: '', component: HomeComponent }

@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {State} from "../app.state";
 
 @Component({
   selector: 'app-subscribe',
@@ -9,10 +7,7 @@ import {State} from "../app.state";
 })
 export class SubscribeComponent implements OnInit {
 
-  // constructor(private _store: Store<State>) {
-  constructor() {
-    console.log("**** SubscribeComponent ****")
-  }
+  constructor() {}
 
   ngOnInit() {
    /* this._store.dispatch(
