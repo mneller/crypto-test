@@ -4,7 +4,7 @@ import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs/Observable';
 import {getHomeState, HomeState} from './home.reducer';
 import {HashParameter, UpdateHashParameter} from './home.actions';
-import {HashAlgo} from '../web-crypto.service';
+import {HashAlgo} from '../shared/web-crypto.service';
 
 
 @Component({

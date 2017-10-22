@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import {HashAlgo} from '../web-crypto.service';
+import {HashAlgo} from '../shared/web-crypto.service';
 
 export interface HashParameter {
   hashAlgo: HashAlgo,

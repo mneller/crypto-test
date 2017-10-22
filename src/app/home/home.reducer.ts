@@ -1,6 +1,6 @@
 import * as homeActions from './home.actions';
 import {createFeatureSelector} from '@ngrx/store';
-import {HashAlgo} from '../web-crypto.service';
+import {HashAlgo} from '../shared/web-crypto.service';
 
 
 export interface HomeState { hashParameter: homeActions.HashParameter , hashValue: string };

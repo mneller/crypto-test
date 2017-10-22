@@ -4,7 +4,7 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {StoreModule} from '@ngrx/store';
 
-import {WebCryptoService} from '../web-crypto.service';
+import {WebCryptoService} from '../shared/web-crypto.service';
 import {HomeComponent} from './home.component';
 import {reducer} from './home.reducer';
 
