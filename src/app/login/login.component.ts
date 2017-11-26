@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {AuthService, User} from "../shared/auth.service";
-import {getLoginState, LoginState} from "./login.reducer";
-import {Store} from "@ngrx/store";
-import {TryLogin} from "./login.actions";
-import {Observable} from "rxjs/Observable";
-import {log} from "util";
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {User} from '../shared/auth.service';
+import {getLoginState, LoginState} from './login.reducer';
+import {Store} from '@ngrx/store';
+import {TryLogin} from './login.actions';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +38,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log("Submit");
+    console.log('Submit');
     this.store.dispatch(new TryLogin(this.loginForm.value));
   }
 }

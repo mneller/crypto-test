@@ -1,7 +1,7 @@
 
 import {EMPTY_USER, User} from '../shared/auth.service';
 import * as LoginActions from './login.actions'
-import {createFeatureSelector} from "@ngrx/store";
+import {createFeatureSelector} from '@ngrx/store';
 
 export interface LoginState {
   user: User;
@@ -12,7 +12,7 @@ export interface State {
   loginState: LoginState;
 } // of interface State.
 
-export const initialState:LoginState = {
+export const initialState: LoginState = {
   user: EMPTY_USER,
   loginError: ''
 };
@@ -24,7 +24,7 @@ export function reducer(
   const newState = {...state};
   switch (action.type) {
     case LoginActions.TRY_LOGIN:
-      const user:User = {
+      const user: User = {
         username: action.payload.username,
         password: action.payload.password,
         firstName: '',

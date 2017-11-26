@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import {Observable} from "rxjs/Observable";
-import {of} from "rxjs/observable/of";
-import {_throw} from "rxjs/observable/throw";
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {of} from 'rxjs/observable/of';
+
 export interface User {
   username: string;
   password: string; // Encrypted Password
@@ -16,7 +16,8 @@ export const EMPTY_USER: User = {
   firstName: '',
   lastName: '',
   isLoggedIn: false
-}
+};
+
 export const testUsers: Array<User> = [
   {
     username: 'eller',
@@ -42,9 +43,9 @@ export class AuthService {
 
   constructor() { }
 
-  login(userName:string, password: string): Observable<User> {
+  login(userName: string, password: string): Observable<User> {
     this.currUser = EMPTY_USER;
-    this.users.filter(user => (user.username === userName && user.password == password))
+    this.users.filter(user => (user.username === userName && user.password === password))
       .map(user => this.currUser = user);
     return of(this.currUser);
   } // of loginUser(...).

@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import {User} from "../shared/auth.service";
+import {User} from '../shared/auth.service';
 
 export const TRY_LOGIN = '[Login] Try Login';
 export const LOGIN_SUCCESSFUL = '[Login] Login Successful';
